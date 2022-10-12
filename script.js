@@ -81,10 +81,18 @@ const images = [
   },
 ]
 
+const timeDelay = 3000;
 let currentImageValue = 0,
-displayNumber = 0,
-score = 0,
-totalAvailable = images.length;
+    displayNumber = 0,
+    score = 0,
+    totalAvailable = images.length,
+    chosen = false;
+
+document.getElementById("statsContent").style.visibility = "hidden";
+document.getElementById("currentScore").innerHTML = score;
+document.getElementById("totalAvailable").innerHTML = totalAvailable;
+document.getElementById("timeSetting").innerHTML = timeDelay / 1000;
+
 
 const setImageSrc = (randomImageName) => {
   const imageContainer = document.getElementById("imageContainer");
@@ -126,7 +134,7 @@ const generate = () => {
     stopTimer();
     return;
   }
-
+chosen = false;
   const randomNumber = Math.floor(Math.random() * images.length);
 const randomImageName = images[randomNumber].image_name;
 setImageSrc(randomImageName);
@@ -138,29 +146,38 @@ images.splice(randomNumber, 1);
 };
 
 const match = () => {
-  currentImageValue === displayNumber ? score++ : score--;
+  if(!chosen) {
+    currentImageValue === displayNumber ? score++ : score--;
+    chosen = true;
   document.getElementById("currentScore").innerHTML = score;
+  }
 }
 
 const noMatch = () => {
-  currentImageValue !== displayNumber ? score++ : score--;
+  if(!chosen) {
+    currentImageValue !== displayNumber ? score++ : score--;
+    chosen = true;
   document.getElementById("currentScore").innerHTML = score;
+  }
 }
 
 let timerRef;
 const timer = () => {
-  timerRef = setInterval(generate, 500);
+  timerRef = setInterval(generate, timeDelay);
 };
 
 const play = () => {
   document.getElementById("message").style.display = "none";
   document.getElementById("startScreen").style.display = "none";
   document.getElementById("play-button").style.display = "none";
+  document.getElementById("statsContent").style.visibility = "visible";
+
   generate();
   timer();
 };
 
 const endOfGame = () => {
+  document.getElementById("statsContent").style.visibility = "hidden";
   document.getElementById("message").style.display = "block";
   document.getElementById("imageContainer").style.display = "none";
   document.getElementById("statsContent").style.display = "none";
