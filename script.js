@@ -107,6 +107,11 @@ const generatePlusOrMinus = () => {
   return number0to1 === 0 ? -1 : +1;
 };
 
+const setImageName = (randomImageName) => {
+  const imageName = randomImageName.slice(0, randomImageName.length - 4);
+  document.getElementById("item-name").innerHTML = " " + imageName + "?";
+}
+
 const generate = () => {
   if(images.length === 0) {
     stopTimer();
@@ -116,6 +121,7 @@ const generate = () => {
   const randomNumber = Math.floor(Math.random() * images.length);
 const randomImageName = images[randomNumber].image_name;
 setImageSrc(randomImageName);
+setImageName(randomImageName);
 const plusOrMinus = generatePlusOrMinus();
 const numberOfItems = images[randomNumber].number_of_items;
 generateDisplayNumber(numberOfItems, plusOrMinus);
@@ -124,7 +130,7 @@ images.splice(randomNumber, 1);
 
 let timerRef;
 const timer = () => {
-  timerRef = setInterval(generate, 4000);
+  timerRef = setInterval(generate, 500);
 };
 
 const play = () => {
